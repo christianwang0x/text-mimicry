@@ -22,8 +22,13 @@ class Mimic:
             i += 1
         return len(self.combinations)
 
-    def get_seed(self):
-        seed = random.choice(self.combinations.keys())
+    def get_seed(self, start_with_cap=True):
+        seed = "l"
+        if start_with_cap:
+            while not seed[0].isupper():
+                seed = random.choice(self.combinations.keys())
+        else:
+            seed = random.choice(self.combinations.keys())
         self.output_text += seed
         return seed
 
