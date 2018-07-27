@@ -10,6 +10,10 @@ class Mimic:
         self.output_text = ""
         self.block_length = 1
 
+    # Get all strings that are of seed_length and
+    #   add to dictionary where the keys are the
+    #   strings and values are the number of times
+    #   that string occurs in the sample text
     def get_combinations(self):
         i = 0
         sample_len = len(self.sample_text)
@@ -21,7 +25,10 @@ class Mimic:
                 self.combinations[s] = 1
             i += 1
         return len(self.combinations)
-
+    
+    # Choose a seed at random from the sample text
+    # The start_with_cap flag toggles whether
+    # The seed must start with a capital letter
     def get_seed(self, start_with_cap=True):
         seed = "l"
         if start_with_cap:
@@ -32,6 +39,9 @@ class Mimic:
         self.output_text += seed
         return seed
 
+    # Get all strings of seed_length from the sample
+    #   text that start with the start_string param
+    # This is used to generate further characters
     def get_valid_combos(self, start_string):
         valid_combos = dict()
         suffix_len = self.block_length
@@ -44,6 +54,9 @@ class Mimic:
                     valid_combos[newstr] += self.combinations[s]
         return valid_combos
 
+    # Choose further characters while taking into
+    #   account the number of times each potential
+    #   character sequence appeared in the sample
     def weighted_choice(self, choices):
         total = sum(w for c, w in choices.items())
         r = random.uniform(0, total)
@@ -53,6 +66,7 @@ class Mimic:
                 return c
             upto += w
 
+    # Get computer-generated text of output_length
     def generate_text(self, output_length):
         if not self.combinations:
             self.get_combinations()
@@ -68,7 +82,7 @@ class Mimic:
             self.output_text += choice
         return len(self.output_text)
 
-
+    
 def run():
     seed_length = 7
     output_length = 1000
